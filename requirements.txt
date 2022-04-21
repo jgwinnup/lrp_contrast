@@ -1,1 +1,4 @@
 sacrebleu
+matplotlib
+streamlit-aggrid
+

@@ -12,16 +12,16 @@ from st_aggrid import AgGrid, GridUpdateMode, GridOptionsBuilder
 # Averaging may be wonky due to interpolation
 
 # Local config
-lrp_dir = '/tmpssd2/dev/head-story'
-lrp_baseline_file = f'{lrp_dir}/base-lrp-eval/lrp_results'
-lrp_augmented_file = f'{lrp_dir}/yolov5-lrp-eval/lrp_results'
-ref_file = f'{lrp_dir}/dev5.pt'
+# lrp_dir = '/tmpssd2/dev/head-story'
+# lrp_baseline_file = f'{lrp_dir}/base-lrp-eval/lrp_results'
+# lrp_augmented_file = f'{lrp_dir}/yolov5-lrp-eval/lrp_results'
+# ref_file = f'{lrp_dir}/test.spm.trim50.pt'
 
 # streamlit cloud config
-# lrp_dir = '.'
-# lrp_baseline_file = f'{lrp_dir}/lrp_results/baseline'
-# lrp_augmented_file = f'{lrp_dir}/lrp_results/yolov5'
-# ref_file = f'{lrp_dir}/ref/dev5.pt'
+lrp_dir = '.'
+lrp_baseline_file = f'{lrp_dir}/lrp_results/baseline'
+lrp_augmented_file = f'{lrp_dir}/lrp_results/yolov5'
+ref_file = f'{lrp_dir}/ref/test.spm.trim50.pt'
 
 # Helper for clarity
 def desentencepiece(sent):
@@ -35,7 +35,7 @@ def tok(sent):
 @st.cache
 def load_ref(ref_file):
     with open(ref_file, 'r') as f:
-        lines = [line.strip() for line in f]
+        lines = [desentencepiece(line.strip()) for line in f]
 
     return lines
 
@@ -124,12 +124,12 @@ if __name__ == '__main__':
 
             ref = refs[id]
             base_hyp = desentencepiece(lrp_base[id]["dst"])
-            aug_hyp = desentencepiece(lrp_base[id]["dst"])
+            aug_hyp = desentencepiece(lrp_aug[id]["dst"])
 
-            base_bleu = 0.0 # sb.sentence_bleu(base_hyp, [ref]).score
-            aug_bleu = 0.0 # sb.sentence_bleu(aug_hyp, [ref]).score
+            base_bleu = sb.sentence_bleu(base_hyp, [ref]).score
+            aug_bleu = sb.sentence_bleu(aug_hyp, [ref]).score
 
-            # st.write(f'{id} ref: {ref}')
+            st.write(f'{id} ref: {ref}')
             st.write(f'Baseline: ({base_bleu:0.4f}) {base_hyp}')
             st.write(f'Augmented: ({aug_bleu:0.4f}) {aug_hyp}')
 
