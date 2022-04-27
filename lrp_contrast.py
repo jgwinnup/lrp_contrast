@@ -20,7 +20,7 @@ from st_aggrid import AgGrid, GridUpdateMode, GridOptionsBuilder
 # streamlit cloud config
 lrp_dir = '.'
 lrp_baseline_file = f'{lrp_dir}/lrp_results/baseline'
-lrp_augmented_file = f'{lrp_dir}/lrp_results/yolov5'
+lrp_augmented_file = f'{lrp_dir}/lrp_results/yolov5_fixspm'
 ref_file = f'{lrp_dir}/ref/test.spm.trim50.pt'
 
 # Helper for clarity
